@@ -1,7 +1,7 @@
 # CVE History API & National Vulnerability Database Frontend
 
 ## Overview  
-This repository provides a complete solution for interacting with CVE (Common Vulnerabilities and Exposures) data through a backend API and a frontend interface. The **CVE History API** enables secure access to CVE data with JWT-based authentication and supports querying, filtering, and exporting CVE data. The **National Vulnerability Database Frontend** is a web-based user interface built with **Next.js** and **Tailwind CSS**, designed to interact with the backend API. Both the backend and frontend are now included in a single repository and can be managed using Docker Compose for easier setup and deployment.
+This repository provides a complete solution for interacting with CVE (Common Vulnerabilities and Exposures) data through a backend API and a frontend interface. The **CVE History API** enables secure access to CVE data with JWT-based authentication and supports querying, filtering, and exporting CVE data. The **National Vulnerability Database Frontend** is a web-based user interface built with **Next.js** and **Tailwind CSS**, designed to interact with the backend API. Both the backend and frontend are now included in a single repository.
 
 ---
 > [!NOTE]
@@ -11,7 +11,7 @@ This repository provides a complete solution for interacting with CVE (Common Vu
 ## Features Implemented  
 - **Backend**: Filtering CVE data based on parameters, exporting filtered CVE data to CSV, statistics for the entire CVE history, and JWT-based authentication for secure access.  
 - **Frontend**: Color scheme based on users' preferred color scheme (dark or light), user authentication via JWT, display and filtering of CVE data, export functionality to CSV, charts using `react-chartjs-2`, and responsive design using Tailwind CSS.  
-- **Docker Compose**: Both frontend and backend are packaged together, enabling you to run the entire application stack with Docker Compose.
+- **Integration**: Backend and frontend are packaged together, enabling you to run the entire application stack with ease.
 
 ---
 
@@ -21,6 +21,7 @@ This repository provides a complete solution for interacting with CVE (Common Vu
 - Implementation of refresh tokens for improved security.  
 - Support for cookie-based JWT authentication.  
 - Rate limiting to prevent abuse.  
+- Email-based account verification.
 
 ### For the National Vulnerability Database Frontend (UI)  
 - Implementing a better UI with a consistent theme.  
@@ -44,8 +45,8 @@ The **CVE History API** provides an interface to fetch, store, and query CVE his
 
 #### Prerequisites  
 Ensure you have the following installed:
-- Docker  
-- Docker Compose
+- Python (with pip)
+- PostgreSQL or a compatible database setup
 
 #### Steps  
 1. **Clone the repository:**  
@@ -61,16 +62,24 @@ Ensure you have the following installed:
      ```
    - Update `backend/.env` with your configuration values.
 
-3. **Start the application with Docker Compose:**  
-   - From the root directory of the repository, run:
-     ```sh
-     docker-compose up --build
-     ```
+3. **Install required dependencies:**  
+   Navigate to the `backend` directory and install the necessary Python packages:
+   ```sh
+   cd backend
+   pip install -r requirements.txt
+   ```
 
-4. **Access the API documentation:**  
-   - Once the containers are up and running, open your browser and visit:  
-     - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)  
-     - Redoc UI: [http://localhost:8000/redoc](http://localhost:8000/redoc)  
+4. **Start the backend service:**  
+   You can run the backend using `uvicorn`:
+   ```sh
+   fastapi run --host 0.0.0.0 --port 8000
+   ```
+   This will start the FastAPI backend service locally on `http://localhost:8000`.
+
+5. **Access the API documentation:**  
+   Once the backend is up and running, open your browser and visit:  
+   - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)  
+   - Redoc UI: [http://localhost:8000/redoc](http://localhost:8000/redoc)  
 
 ---
 
@@ -129,8 +138,8 @@ The **National Vulnerability Database Frontend** is a web-based user interface b
 
 #### Prerequisites  
 Ensure you have the following installed:
-- Docker  
-- Docker Compose
+- Node.js (version 18 or higher)
+- npm or yarn
 
 #### Steps  
 1. **Clone the repository:**  
@@ -146,27 +155,26 @@ Ensure you have the following installed:
      ```
    - Update `frontend/.env.local` with your configuration values.
 
-3. **Start the application with Docker Compose:**  
-   - From the root directory of the repository, run:
-     ```sh
-     docker-compose up --build
-     ```
+3. **Install required dependencies:**  
+   Navigate to the `frontend` directory and install the necessary dependencies:
+   ```sh
+   cd frontend
+   npm install
+   ```
 
-4. **Access the frontend:**  
-   - Open your browser and visit:  
-     - [http://localhost:3000](http://localhost:3000) to access the web interface.  
+4. **Start the frontend service:**  
+   You can run the frontend using:
+   ```sh
+   npm run dev
+   ```
+   This will start the Next.js development server locally on `http://localhost:3000`.
+
+5. **Access the frontend:**  
+   Open your browser and visit:  
+   - [http://localhost:3000](http://localhost:3000) to access the web interface.  
 
 ---
 
-## Docker Compose Setup
+## Backend-Frontend Interaction
 
-With **Docker Compose**, both the frontend and backend services are managed together, simplifying the setup process. You can run the entire application stack (frontend + backend) by executing the following command:
-
-```sh
-docker-compose up --build
-```
-
-This will:
-- Build and start the backend service (FastAPI with JWT authentication).
-- Build and start the frontend service (Next.js with Tailwind CSS).
-- Ensure both services communicate with each other using the defined network.
+- The frontend communicates with the backend API for authentication, fetching CVE data, and exporting CSV files. Make sure the backend is running at `http://localhost:8000` and the frontend is running at `http://localhost:3000` to ensure smooth operation.

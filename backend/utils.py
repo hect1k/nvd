@@ -2,7 +2,6 @@ import asyncio
 from datetime import datetime
 
 import aiohttp
-from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
@@ -11,7 +10,7 @@ from models import CVEChange
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cvehistory/2.0"
 ENTRIES_TO_FETCH = 200000
 RESULTS_PER_PAGE = 5000
-DELAY_BETWEEN_REQUESTS = 0.5
+DELAY_BETWEEN_REQUESTS = 0
 
 async def fetch_nvd_data(session: aiohttp.ClientSession, start_index: int):
     url = f"{NVD_API_URL}/?resultsPerPage={RESULTS_PER_PAGE}&startIndex={start_index}"
@@ -26,12 +25,6 @@ async def fetch_nvd_data(session: aiohttp.ClientSession, start_index: int):
 async def store_cve_data(db: AsyncSession, cve_data):
     if not cve_data or "cveChanges" not in cve_data:
         return
-
-    await db.execute(delete(CVEChange))
-    await db.commit()
-
-    print("[INFO] Database cleared")
-    print("[INFO] Storing data...")
 
     records = [
         CVEChange(
@@ -49,6 +42,7 @@ async def store_cve_data(db: AsyncSession, cve_data):
 async def fetch_and_store_cve_data():
     async with aiohttp.ClientSession() as session:
         async for db in get_db():
+            await db.execute(CVEChange.__table__.delete())
             for start_index in range(0, ENTRIES_TO_FETCH, RESULTS_PER_PAGE):
                 data = await fetch_nvd_data(session, start_index)
                 await store_cve_data(db, data)
