@@ -86,7 +86,7 @@ async def get_cves(
         stmt = select(models.CVEChange).order_by(models.CVEChange.created.desc())
 
         if cve_id:
-            stmt = stmt.where(models.CVEChange.cve_id == cve_id)
+            stmt = stmt.where(models.CVEChange.cve_id.ilike(f"%{cve_id}%"))
         if event_name:
             stmt = stmt.where(models.CVEChange.event_name.ilike(f"%{event_name}%"))
 
