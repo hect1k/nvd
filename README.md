@@ -1,7 +1,7 @@
 # CVE History API & National Vulnerability Database Frontend
 
 ## Overview  
-This repository provides a complete solution for interacting with CVE (Common Vulnerabilities and Exposures) data through a backend API and a frontend interface. The **CVE History API** enables secure access to CVE data with JWT-based authentication and supports querying, filtering, and exporting CVE data. The **National Vulnerability Database Frontend** is a web-based user interface built with **Next.js** and **Tailwind CSS**, designed to interact with the backend API. Both the backend and frontend are now included in a single repository.
+This repository provides a complete solution for interacting with [CVE (Common Vulnerabilities and Exposures) data](https://services.nvd.nist.gov/rest/json/cvehistory/2.0) through a backend API and a frontend interface. The **CVE History API** enables secure access to CVE data with JWT-based authentication and supports querying, filtering, and exporting CVE data. The **National Vulnerability Database Frontend** is a web-based user interface built with **Next.js** and **Tailwind CSS**, designed to interact with the backend API. Both the backend and frontend are now included in a single repository.
 
 ---
 > [!NOTE]
