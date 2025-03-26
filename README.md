@@ -51,7 +51,7 @@ Ensure you have the following installed:
 #### Steps  
 1. **Clone the repository:**  
    ```sh
-   git clone https://github.com/nnisarggada/nvd
+   git clone https://github.com/hect1k/nvd
    cd nvd
    ```
 
